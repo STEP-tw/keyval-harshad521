@@ -2,7 +2,6 @@ const src=function(filePath){return "../src/"+filePath};
 const errors=function(filePath){return "../src/errors/"+filePath};
 
 const assert = require('chai').assert;
-const assertx=require('assert');
 const Parser=require(src('index.js')).Parser;
 const MissingValueError=require(errors('missingValueError.js'));
 const MissingEndQuoteError=require(errors('missingEndQuoteError.js'));
@@ -199,9 +198,7 @@ describe("mixed values with both quotes and without",function(){
 });
 
 const errorChecker=function(key,pos,typeOfError) {
-  //console.log(key,pos,typeOfError);
     return function(err) {
-      //console.log(err);
       if(err instanceof typeOfError && err.key==key && err.position==pos)
         return true;
       return false;
@@ -214,15 +211,16 @@ describe("error handling",function(){
   });
 
   it("throws error on missing value when value is unquoted",function(){
-    assertx.throws(
+    assert.throws(
       () => {
         kvParser.parse("key=")
       },
-      errorChecker("key",3,MissingValueError))
+      errorChecker("key",10,MissingValueError)
+    )
   });
 
   it("throws error on missing value when value is quoted",function(){
-    assertx.throws(
+    assert.throws(
       () => {
         kvParser.parse("key=\"value")
       },
@@ -231,16 +229,16 @@ describe("error handling",function(){
   });
 
   it("throws error on missing key",function(){
-    assertx.throws(
+    assert.throws(
       () => {
         var p=kvParser.parse("=value");
-      },
+    },
       errorChecker(undefined,0,MissingKeyError)
     )
   });
 
   it("throws error on invalid key",function(){
-    assertx.throws(
+    assert.throws(
       () => {
         var p=kvParser.parse("'foo'=value");
       },
@@ -249,7 +247,7 @@ describe("error handling",function(){
   });
 
   it("throws error on missing assignment operator",function(){
-    assertx.throws(
+    assert.throws(
       () => {
         var p=kvParser.parse("key value");
       },
@@ -258,7 +256,7 @@ describe("error handling",function(){
   });
 
   it("throws error on incomplete key value pair",function(){
-    assertx.throws(
+    assert.throws(
       () => {
         var p=kvParser.parse("key");
       },
