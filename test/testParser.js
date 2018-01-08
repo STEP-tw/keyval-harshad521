@@ -199,7 +199,9 @@ describe("mixed values with both quotes and without",function(){
 });
 
 const errorChecker=function(key,pos,typeOfError) {
+  //console.log(key,pos,typeOfError);
     return function(err) {
+      //console.log(err);
       if(err instanceof typeOfError && err.key==key && err.position==pos)
         return true;
       return false;
