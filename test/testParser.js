@@ -1,7 +1,7 @@
 const src=function(filePath){return "../src/"+filePath};
 const errors=function(filePath){return "../src/errors/"+filePath};
-
 const assert = require('chai').assert;
+const assertx = require('assert');
 const Parser=require(src('index.js')).Parser;
 const MissingValueError=require(errors('missingValueError.js'));
 const MissingEndQuoteError=require(errors('missingEndQuoteError.js'));
@@ -211,16 +211,16 @@ describe("error handling",function(){
   });
 
   it("throws error on missing value when value is unquoted",function(){
-    assert.throws(
+    assertx.throws(
       () => {
         kvParser.parse("key=")
       },
-      errorChecker("key",10,MissingValueError)
+      errorChecker("key",3,MissingValueError)
     )
   });
 
   it("throws error on missing value when value is quoted",function(){
-    assert.throws(
+    assertx.throws(
       () => {
         kvParser.parse("key=\"value")
       },
@@ -229,7 +229,7 @@ describe("error handling",function(){
   });
 
   it("throws error on missing key",function(){
-    assert.throws(
+    assertx.throws(
       () => {
         var p=kvParser.parse("=value");
     },
@@ -238,7 +238,7 @@ describe("error handling",function(){
   });
 
   it("throws error on invalid key",function(){
-    assert.throws(
+    assertx.throws(
       () => {
         var p=kvParser.parse("'foo'=value");
       },
@@ -247,7 +247,7 @@ describe("error handling",function(){
   });
 
   it("throws error on missing assignment operator",function(){
-    assert.throws(
+    assertx.throws(
       () => {
         var p=kvParser.parse("key value");
       },
@@ -256,7 +256,7 @@ describe("error handling",function(){
   });
 
   it("throws error on incomplete key value pair",function(){
-    assert.throws(
+    assertx.throws(
       () => {
         var p=kvParser.parse("key");
       },
